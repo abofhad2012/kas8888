@@ -1,7 +1,6 @@
 from django.urls import path
-
-app_name = "products"
+from . import views
 
 urlpatterns = [
-    # سيتم إضافة المسارات لاحقاً
+    path('', views.products_list, name='products_list'),
 ]

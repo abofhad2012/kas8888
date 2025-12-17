@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+<title>Kas Store | الرئيسية</title>
+
+<style>
+body{
+  font-family:'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  background:#f5f1ed;
+  color:#333;
+  margin:0;
+}
+
+/* ===== Hero Video Section ===== */
+.hero{
+  position:relative;
+  height:75vh;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* Video Background */
+.hero video{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+}
+
+/* Dark Overlay */
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:2;
+}
+
+/* Hero Content */
+.hero-content{
+  position:relative;
+  z-index:3;
+  color:#fff;
+  max-width:700px;
+  padding:20px;
+}
+
+.hero-content h1{
+  font-size:44px;
+  margin-bottom:15px;
+  font-weight:700;
+}
+
+.hero-content p{
+  font-size:20px;
+  margin-bottom:30px;
+  line-height:1.8;
+  font-weight:400;
+}
+
+.hero-content button{
+  padding:14px 34px;
+  border:none;
+  background:#d4af8f;
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+  border-radius:30px;
+  transition:.3s;
+  font-family:'Cairo', sans-serif;
+  font-weight:600;
+}
+
+.hero-content button:hover{
+  background:#c9a080;
+}
+</style>
+</head>
+
+<body>
+
+<!-- الشريط العلوي -->
+{% include "header.html" %}
+
+<!-- ===== Hero with Video ===== -->
+<main class="hero">
+
+  <!-- Video -->
+  <video autoplay muted loop playsinline>
+    <source src="{% static 'hero.mp4' %}" type="video/mp4">
+    متصفحك لا يدعم تشغيل الفيديو
+  </video>
+
+  <!-- Content -->
+  <div class="hero-content">
+    <h1>أناقة تليق بذوقك</h1>
+    <p>
+      اكتشف مجموعة مختارة من المنتجات الفاخرة  
+      بأسعار تنافسية وجودة عالية
+    </p>
+
+    <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
+      تسوق الآن
+    </button>
+  </div>
+
+</main>
+
+<!-- قسم المنتجات -->
+{% include "products/products.html" %}
+
+<!-- الشريط السفلي -->
+{% include "footer.html" %}
+
+</body>
+</html>

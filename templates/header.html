@@ -1,0 +1,225 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --gold:#d4af8f;
+  --gold-dark:#c9a080;
+  --text:#222;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:'Cairo', sans-serif;
+  margin:0;
+  padding:0;
+}
+
+/* ===== Header ===== */
+.header{
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+/* ===== Top Bar ===== */
+.top-bar{
+  background:linear-gradient(90deg,var(--gold),var(--gold-dark));
+  color:#fff;
+  font-size:14px;
+  padding:10px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* ===== Auth Area ===== */
+.auth-area{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.auth-area span{
+  font-weight:600;
+}
+
+.auth-area a{
+  padding:7px 16px;
+  text-decoration:none;
+  border-radius:20px;
+  font-size:13px;
+  transition:.3s;
+}
+
+.btn-login{background:#fff;color:#333;}
+.btn-register{background:#222;color:#fff;}
+.btn-logout{background:#dc3545;color:#fff;}
+
+/* ===== Nav ===== */
+.nav{
+  max-width:1400px;
+  margin:auto;
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+/* ===== Logo ===== */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:22px;
+  font-weight:700;
+  color:var(--text);
+}
+
+.logo img{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid var(--gold);
+}
+
+/* ===== Desktop Menu ===== */
+.menu{
+  display:flex;
+  gap:28px;
+}
+
+.menu a{
+  text-decoration:none;
+  color:#333;
+  font-weight:600;
+  font-size:15px;
+}
+
+.menu a:hover{
+  color:var(--gold-dark);
+}
+
+/* ===== Burger Button ===== */
+.burger{
+  display:none;
+  font-size:26px;
+  cursor:pointer;
+}
+
+/* ===== Mobile Menu ===== */
+.mobile-menu{
+  position:fixed;
+  top:0;
+  right:-260px;
+  width:260px;
+  height:100%;
+  background:#fff;
+  box-shadow:-4px 0 20px rgba(0,0,0,.15);
+  padding:30px 20px;
+  transition:.3s;
+  z-index:9999;
+}
+
+.mobile-menu.active{
+  right:0;
+}
+
+.mobile-menu a{
+  display:block;
+  margin-bottom:20px;
+  text-decoration:none;
+  color:#222;
+  font-weight:600;
+  font-size:16px;
+}
+
+.mobile-menu a:hover{
+  color:var(--gold-dark);
+}
+
+/* ===== Overlay ===== */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  z-index:9998;
+}
+
+.overlay.active{
+  display:block;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px){
+  .menu{display:none;}
+  .burger{display:block;}
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div>📞 +966 000 000 000</div>
+
+    <div class="auth-area">
+      {% if user.is_authenticated %}
+        <span>مرحباً {{ user.username }} 👋</span>
+        <a href="{% url 'accounts:logout' %}" class="btn-logout">تسجيل خروج</a>
+      {% else %}
+        <a href="{% url 'accounts:login' %}" class="btn-login">تسجيل الدخول</a>
+        <a href="{% url 'accounts:register' %}" class="btn-register">إنشاء حساب</a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="logo">
+      <img src="{% static 'default-product.png.avif' %}" alt="Kas Store">
+      Kas Store
+    </div>
+
+    <!-- Desktop Menu -->
+    <div class="menu">
+      <a href="/">الرئيسية</a>
+      <a href="#products">المنتجات</a>
+      <a href="#">العروض</a>
+      <a href="/contact/">اتصل بنا</a>
+    </div>
+
+    <!-- Burger -->
+    <div class="burger" onclick="toggleMenu()">☰</div>
+  </nav>
+
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">الرئيسية</a>
+  <a href="#products">المنتجات</a>
+  <a href="#">العروض</a>
+  <a href="/contact/">اتصل بنا</a>
+</div>
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+<script>
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('active');
+  document.getElementById('overlay').classList.toggle('active');
+}
+</script>
+
+</body>
+</html>
