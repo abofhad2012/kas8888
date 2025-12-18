@@ -2,9 +2,13 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 
 
+# ===============================
+# Category (التصنيفات)
+# ===============================
 class Category(models.Model):
     name = models.CharField(
         max_length=100,
+        unique=True,
         verbose_name='اسم التصنيف'
     )
 
@@ -16,16 +20,22 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'تصنيف'
         verbose_name_plural = 'التصنيفات'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
 
 
+# ===============================
+# Product (المنتجات)
+# ===============================
 class Product(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
+        related_name='products',
         verbose_name='التصنيف'
     )
 
@@ -58,11 +68,15 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'منتج'
         verbose_name_plural = 'المنتجات'
+        ordering = ['-created_at']
 
     def __str__(self):
         return self.name
 
 
+# ===============================
+# Product Images (صور المنتجات)
+# ===============================
 class ProductImage(models.Model):
     product = models.ForeignKey(
         Product,
@@ -71,7 +85,6 @@ class ProductImage(models.Model):
         verbose_name='المنتج'
     )
 
-    # ✅ التعريف الصحيح بدون تكرار verbose_name
     image = CloudinaryField(
         verbose_name='صورة المنتج'
     )
@@ -82,3 +95,24 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"صورة للمنتج {self.product.name}"
+from django.contrib import admin
+from .models import Category, Product, ProductImage
+
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    extra = 1
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ("name", "created_at")
+    search_fields = ("name",)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "category", "price", "stock", "created_at")
+    list_filter = ("category", "created_at")
+    search_fields = ("name", "description")
+    inlines = [ProductImageInline]
