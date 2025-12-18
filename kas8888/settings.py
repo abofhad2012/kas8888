@@ -43,6 +43,10 @@ INSTALLED_APPS = [
 # ===============================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # WhiteNoise (مهم جدًا)
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -85,7 +89,6 @@ WSGI_APPLICATION = 'kas8888.wsgi.application'
 # قاعدة البيانات
 # ===============================
 if DEBUG:
-    # ===== Development (SQLite) =====
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -93,7 +96,6 @@ if DEBUG:
         }
     }
 else:
-    # ===== Production (PostgreSQL) =====
     DATABASES = {
         'default': {
             'ENGINE': os.getenv('DB_ENGINE'),
@@ -124,14 +126,17 @@ USE_I18N = True
 USE_TZ = True
 
 # ===============================
-# Static Files
+# Static Files (WhiteNoise)
 # ===============================
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# WhiteNoise settings
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ===============================
-# Cloudinary
+# Cloudinary (Media)
 # ===============================
 import cloudinary
 import cloudinary.uploader
