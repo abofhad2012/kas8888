@@ -1,26 +1,16 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
-
-from .views import home, contact   # ⬅️ أضف contact
+from .views import home
+from .page_views import contact_view, about_view
 
 urlpatterns = [
-    # الصفحة الرئيسية
-    path("", home, name="home"),
+    path('', home, name='home'),
+    path('admin/', admin.site.urls),
 
-    # صفحة اتصل بنا
-    path("contact/", contact, name="contact"),  # ⬅️ جديد
+    path('products/', include('products.urls')),
+    path('orders/', include('orders.urls')),
+    path('cart/', include('cart.urls')),
 
-    # لوحة تحكم Django
-    path("admin/", admin.site.urls),
-
-    # التطبيقات
-    path("accounts/", include("accounts.urls")),
-    path("products/", include("products.urls")),
-    path("orders/", include("orders.urls")),
+    path('contact/', contact_view, name='contact'),
+    path('about/', about_view, name='about'),
 ]
-
-# إعدادات media أثناء التطوير
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

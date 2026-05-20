@@ -1,0 +1,58 @@
+.container{
+  max-width:1100px;
+  margin:40px auto;
+  background:#fff;
+  padding:30px;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:40px;
+  align-items:start;
+}
+
+.images{
+  width:100%;
+}
+
+.main-img{
+  width:100%;
+  max-height:500px;
+  object-fit:cover;
+  border-radius:16px;
+}
+
+.details h1{
+  margin-top:0;
+  font-size:28px;
+}
+
+.price{
+  color:#c9a080;
+  font-size:24px;
+  font-weight:700;
+  margin:15px 0;
+}
+
+select, button{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  margin-top:12px;
+  font-size:15px;
+}
+
+button{
+  background:#d4af8f;
+  border:none;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* موبايل */
+@media (max-width:900px){
+  .container{
+    grid-template-columns:1fr;
+  }
+}

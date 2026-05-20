@@ -1,0 +1,79 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Kas Store{% endblock %}</title>
+
+  <!-- ===== Messages CSS ===== -->
+  <style>
+    .messages {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      padding: 14px 22px;
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.15);
+      animation: slideIn .4s ease;
+      min-width: 220px;
+    }
+
+    .msg.success { background: #27ae60; }
+    .msg.error   { background: #c0392b; }
+    .msg.warning { background: #f39c12; }
+    .msg.info    { background: #2980b9; }
+
+    @keyframes slideIn {
+      from { transform: translateY(-10px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  {% include "includes/header.html" %}
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  {% include "includes/footer.html" %}
+
+  <!-- ===== Django Messages ===== -->
+  {% if messages %}
+    <div class="messages" id="messagesBox">
+      {% for message in messages %}
+        <div class="msg {{ message.tags }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- ===== Auto Hide Messages ===== -->
+  <script>
+    setTimeout(() => {
+      const box = document.getElementById('messagesBox');
+      if (box) {
+        box.style.opacity = '0';
+        box.style.transform = 'translateY(-10px)';
+        setTimeout(() => box.remove(), 400);
+      }
+    }, 3500);
+  </script>
+
+  {% block extra_js %}{% endblock %}
+
+</body>
+</html>

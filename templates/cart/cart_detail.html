@@ -1,0 +1,56 @@
+ <!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>سلة التسوق</title>
+</head>
+<body>
+
+{% include 'includes/header.html' %}
+
+<main style="padding:60px 10%; font-family:'Segoe UI', Tahoma;">
+
+    <h1 style="color:#8a6a3f; margin-bottom:30px;">سلة التسوق</h1>
+
+    {% if cart %}
+        {% for key, item in cart.items %}
+            <div style="
+                border:1px solid #ead9c7;
+                border-radius:14px;
+                padding:20px;
+                margin-bottom:20px;
+            ">
+                <h3>{{ item.name }}</h3>
+                <p>السعر: {{ item.price }} ر.س</p>
+                <p>الكمية: {{ item.quantity }}</p>
+                <p>المقاس: {{ item.size }}</p>
+            </div>
+        {% endfor %}
+
+        <h2 style="margin-top:30px;">
+            الإجمالي: {{ total }} ر.س
+        </h2>
+
+        <a href="{% url 'orders:create_order' %}"
+           style="
+             display:inline-block;
+             margin-top:30px;
+             background:#d4af8f;
+             color:white;
+             padding:14px 34px;
+             border-radius:30px;
+             text-decoration:none;
+           ">
+            إتمام الطلب
+        </a>
+
+    {% else %}
+        <p>السلة فارغة</p>
+    {% endif %}
+
+</main>
+
+{% include 'includes/footer.html' %}
+
+</body>
+</html>

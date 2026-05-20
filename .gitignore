@@ -1,0 +1,16 @@
+﻿.env
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+db.sqlite3
+*.sqlite3
+db.sqlite3.backup-*
+.idea/
+.history/
+.snapshots/
+staticfiles/
+media/
+*.log
+test_cloudinary.py

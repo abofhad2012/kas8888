@@ -1,127 +1,106 @@
-{% load static %}
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <title>المنتجات</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        .products-grid{
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+            gap:30px;
+        }
 
-<title>Kas Store | الرئيسية</title>
+        .product-card{
+            background:#fff;
+            border-radius:18px;
+            padding:20px;
+            text-align:center;
+            box-shadow:0 10px 25px rgba(0,0,0,.08);
+            transition:.3s;
+        }
 
-<style>
-body{
-  font-family:'Cairo', 'Segoe UI', Tahoma, sans-serif;
-  background:#f5f1ed;
-  color:#333;
-  margin:0;
-}
+        .product-card:hover{
+            transform:translateY(-6px);
+        }
 
-/* ===== Hero Video Section ===== */
-.hero{
-  position:relative;
-  height:75vh;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
+        .product-card img{
+            width:100%;
+            height:240px;
+            object-fit:cover;
+            border-radius:14px;
+            margin-bottom:15px;
+        }
 
-/* Video Background */
-.hero video{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:1;
-}
+        .product-card h3{
+            color:#8a6a3f;
+            font-size:18px;
+            margin:10px 0;
+        }
 
-/* Dark Overlay */
-.hero::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.45);
-  z-index:2;
-}
+        .price{
+            font-size:20px;
+            font-weight:600;
+            color:#6b4e2e;
+            margin-bottom:15px;
+        }
 
-/* Hero Content */
-.hero-content{
-  position:relative;
-  z-index:3;
-  color:#fff;
-  max-width:700px;
-  padding:20px;
-}
+        .btn{
+            display:inline-block;
+            padding:12px 26px;
+            background:#d4af8f;
+            color:#fff;
+            border-radius:30px;
+            text-decoration:none;
+            transition:.3s;
+        }
 
-.hero-content h1{
-  font-size:44px;
-  margin-bottom:15px;
-  font-weight:700;
-}
+        .btn:hover{
+            background:#c9a060;
+        }
 
-.hero-content p{
-  font-size:20px;
-  margin-bottom:30px;
-  line-height:1.8;
-  font-weight:400;
-}
-
-.hero-content button{
-  padding:14px 34px;
-  border:none;
-  background:#d4af8f;
-  color:#fff;
-  font-size:16px;
-  cursor:pointer;
-  border-radius:30px;
-  transition:.3s;
-  font-family:'Cairo', sans-serif;
-  font-weight:600;
-}
-
-.hero-content button:hover{
-  background:#c9a080;
-}
-</style>
+        @media (max-width:768px){
+            main{padding:40px 6%;}
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- الشريط العلوي -->
-{% include "header.html" %}
+{% include "includes/header.html" %}
 
-<!-- ===== Hero with Video ===== -->
-<main class="hero">
+<main style="padding:70px 10%;font-family:'Segoe UI',Tahoma;">
 
-  <!-- Video -->
-  <video autoplay muted loop playsinline>
-    <source src="{% static 'hero.mp4' %}" type="video/mp4">
-    متصفحك لا يدعم تشغيل الفيديو
-  </video>
+    <div class="products-grid">
 
-  <!-- Content -->
-  <div class="hero-content">
-    <h1>أناقة تليق بذوقك</h1>
-    <p>
-      اكتشف مجموعة مختارة من المنتجات الفاخرة  
-      بأسعار تنافسية وجودة عالية
-    </p>
+        {% for product in products %}
+        <div class="product-card">
 
-    <button onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">
-      تسوق الآن
-    </button>
-  </div>
+            {% with image=product.images.first %}
+                {% if image %}
+                    <img src="{{ image.image.url }}" alt="{{ product.name }}">
+                {% endif %}
+            {% endwith %}
+
+            <h3>{{ product.name }}</h3>
+
+            <div class="price">
+                {{ product.price }} ر.س
+            </div>
+
+            <!-- ✅ الزر الصحيح -->
+            <a href="{% url 'products:product_detail' product.id %}" class="btn">
+                عرض التفاصيل
+            </a>
+
+        </div>
+        {% endfor %}
+
+    </div>
 
 </main>
 
-<!-- قسم المنتجات -->
-{% include "products/products.html" %}
-
-<!-- الشريط السفلي -->
-{% include "footer.html" %}
+{% include "includes/footer.html" %}
 
 </body>
 </html>

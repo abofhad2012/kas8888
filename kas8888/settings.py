@@ -2,25 +2,29 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# ===============================
-# تحميل env
-# ===============================
+# ==================================================
+# Base Directory & Environment
+# ==================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
-# ===============================
-# الأمان
-# ===============================
-SECRET_KEY = os.getenv('SECRET_KEY')
+# ==================================================
+# Security
+# ==================================================
+SECRET_KEY = os.getenv('SECRET_KEY', 'unsafe-secret-key')
 
-DEBUG = os.getenv('DEBUG') == 'True'
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
+ALLOWED_HOSTS = os.getenv(
+    'ALLOWED_HOSTS',
+    '127.0.0.1,localhost,.onrender.com'
+).split(',')
 
-# ===============================
-# التطبيقات
-# ===============================
+# ==================================================
+# Applications
+# ==================================================
 INSTALLED_APPS = [
+    # Django Core
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,23 +32,29 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Cloudinary
+    # Media / Cloudinary
     'cloudinary',
     'cloudinary_storage',
 
-    # تطبيقات المشروع
+    # Project Apps
     'accounts',
     'products',
     'orders',
+    'cart',
 ]
 
-# ===============================
+# ✅ Django Extensions (لأوامر التشخيص مثل show_urls)
+INSTALLED_APPS += [
+    'django_extensions',
+]
+
+# ==================================================
 # Middleware
-# ===============================
+# ==================================================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    # WhiteNoise (مهم جدًا)
+    # Static files (WhiteNoise)
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,14 +66,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ===============================
-# URLs
-# ===============================
+# ==================================================
+# URL Configuration
+# ==================================================
 ROOT_URLCONF = 'kas8888.urls'
+WSGI_APPLICATION = 'kas8888.wsgi.application'
 
-# ===============================
+# ==================================================
 # Templates
-# ===============================
+# ==================================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,14 +91,9 @@ TEMPLATES = [
     },
 ]
 
-# ===============================
-# WSGI
-# ===============================
-WSGI_APPLICATION = 'kas8888.wsgi.application'
-
-# ===============================
-# قاعدة البيانات
-# ===============================
+# ==================================================
+# Database
+# ==================================================
 if DEBUG:
     DATABASES = {
         'default': {
@@ -107,9 +113,9 @@ else:
         }
     }
 
-# ===============================
-# التحقق من كلمات المرور
-# ===============================
+# ==================================================
+# Password Validation
+# ==================================================
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -117,42 +123,47 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# ===============================
-# اللغة والمنطقة الزمنية
-# ===============================
+# ==================================================
+# Localization
+# ==================================================
 LANGUAGE_CODE = 'ar'
 TIME_ZONE = 'Asia/Riyadh'
 USE_I18N = True
 USE_TZ = True
 
-# ===============================
-# Static Files (WhiteNoise)
-# ===============================
+# ==================================================
+# Static Files
+# ==================================================
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
 
-# WhiteNoise settings
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ===============================
-# Cloudinary (Media)
-# ===============================
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
-cloudinary.config(
-    cloud_name=os.getenv('CLOUDINARY_CLOUD_NAME'),
-    api_key=os.getenv('CLOUDINARY_API_KEY'),
-    api_secret=os.getenv('CLOUDINARY_API_SECRET'),
-    secure=True
-)
-
+# ==================================================
+# Media Files (Cloudinary)
+# ==================================================
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 MEDIA_URL = '/media/'
 
-# ===============================
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+
+# ==================================================
+# Authentication Redirects
+# ==================================================
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login/'
+
+# ==================================================
 # Default Primary Key
-# ===============================
+# ==================================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

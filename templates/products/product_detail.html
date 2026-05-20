@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ product.name }}</title>
+
+  <style>
+    main{
+      padding:70px 10%;
+      font-family:'Segoe UI', Tahoma;
+    }
+
+    .product-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:50px;
+      align-items:center;
+    }
+
+    /* ===== المقاسات ===== */
+    .size-wrapper {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 15px 0 20px;
+    }
+
+    .size-option label {
+      border:1.5px solid #ead9c7;
+      padding:10px 16px;
+      border-radius:25px;
+      cursor:pointer;
+      color:#8a6a3f;
+      font-weight:600;
+    }
+
+    .size-option input{
+      margin-left:6px;
+    }
+
+    /* ===== زر السلة ===== */
+    .add-btn {
+      background:#d4af8f;
+      color:white;
+      padding:14px 36px;
+      border:none;
+      border-radius:30px;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .add-btn:hover {
+      background:#c9a060;
+    }
+
+    .stock.empty{
+      color:#b84d4d;
+      margin-top:10px;
+      font-weight:600;
+    }
+
+    /* ===== دليل المقاسات ===== */
+    .size-guide {
+      margin-top:60px;
+      padding:30px;
+      background:#fff7f0;
+      border:1px solid #ead9c7;
+      border-radius:18px;
+      text-align:center;
+    }
+
+    /* ===== موبايل ===== */
+    @media (max-width:768px){
+      main{padding:40px 6%;}
+      .product-grid{
+        grid-template-columns:1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+{% include 'includes/header.html' %}
+
+<main>
+
+  <div class="product-grid">
+
+    <!-- صورة المنتج -->
+    <div>
+      {% with image=product.images.first %}
+        {% if image %}
+          <img src="{{ image.image.url }}"
+               alt="{{ product.name }}"
+               style="width:100%; border-radius:18px;">
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <!-- تفاصيل المنتج -->
+    <div>
+
+      <h1 style="color:#8a6a3f;">{{ product.name }}</h1>
+
+      <p style="color:#6b4e2e; line-height:1.9;">
+        {{ product.description }}
+      </p>
+
+      <p style="font-size:22px; color:#8a6a3f; font-weight:600;">
+        {{ product.price }} <span style="font-weight:400;">ر.س</span>
+      </p>
+
+      <!-- ✅ نموذج الإضافة للسلة (الصيغة الصحيحة) -->
+      <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
+        {% csrf_token %}
+
+        {% if product.sizes.exists %}
+          <p style="color:#8a6a3f;font-weight:600;">اختر المقاس:</p>
+
+          <div class="size-wrapper">
+            {% for size in product.sizes.all %}
+              <div class="size-option">
+                <label>
+                  <input type="radio" name="size" value="{{ size.size }}" required>
+                  {{ size.size }}
+                </label>
+              </div>
+            {% endfor %}
+          </div>
+
+          <button type="submit" class="add-btn">
+            🛒 أضف إلى السلة
+          </button>
+
+        {% else %}
+          <p class="stock empty">لا توجد مقاسات متاحة حاليًا</p>
+        {% endif %}
+      </form>
+
+    </div>
+  </div>
+
+  <!-- دليل المقاسات -->
+  <div class="size-guide">
+    <h3 style="color:#8a6a3f;">📐 دليل المقاسات</h3>
+    <p>دليل المقاسات</p>
+  </div>
+
+</main>
+
+{% include 'includes/footer.html' %}
+
+</body>
+</html>
