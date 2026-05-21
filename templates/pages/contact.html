@@ -3,7 +3,7 @@
 {% block title %}تواصل معنا | حِلْية{% endblock %}
 
 {% block content %}
-<section class="container py-5">
+<section class="container py-5 contact-page">
     <h1>تواصل معنا</h1>
     <p>نسعد بخدمتك والإجابة عن استفساراتك.</p>
 
@@ -12,15 +12,16 @@
             <strong>واتساب:</strong>
             <a href="https://wa.me/966538583799"
                target="_blank"
-               rel="noopener noreferrer">
-                +966 53 858 3799
+               rel="noopener noreferrer"
+               class="phone-ltr">
+                <bdi dir="ltr">+966 53 858 3799</bdi>
             </a>
         </p>
 
         <p><strong>ساعات العمل:</strong> من السبت إلى الخميس، 9 صباحاً - 9 مساءً</p>
     </div>
 
-    <form method="post">
+    <form method="post" onsubmit="sendWhatsAppMessage(event)" class="contact-form">
         {% csrf_token %}
 
         <div class="mb-3">
@@ -43,7 +44,83 @@
             <textarea id="message" name="message" rows="5" required></textarea>
         </div>
 
-        <button type="submit">إرسال</button>
+        <button type="submit">إرسال عبر واتساب</button>
     </form>
 </section>
+
+<style>
+.contact-page {
+    max-width: 850px;
+    margin: auto;
+}
+
+.contact-form {
+    margin-top: 25px;
+}
+
+.contact-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #6b4e2e;
+    font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #e6d5c3;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: #c9a060;
+}
+
+.contact-form button {
+    background-color: #d7ad8b;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.contact-form button:hover {
+    background-color: #c49a76;
+}
+
+.phone-ltr {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
+}
+</style>
+
+<script>
+function sendWhatsAppMessage(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    const whatsappNumber = "966538583799";
+
+    const text =
+        "مرحباً حِلْية، لدي استفسار:%0A%0A" +
+        "الاسم: " + encodeURIComponent(name) + "%0A" +
+        "البريد: " + encodeURIComponent(email) + "%0A" +
+        "الجوال: " + encodeURIComponent(phone || "غير مذكور") + "%0A" +
+        "الرسالة: " + encodeURIComponent(message);
+
+    window.open("https://wa.me/" + whatsappNumber + "?text=" + text, "_blank");
+}
+</script>
 {% endblock %}

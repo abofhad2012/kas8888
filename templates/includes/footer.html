@@ -30,25 +30,6 @@
                     واتساب
                 </a>
             </p>
-
-            <!-- أضف روابط إنستغرام وسناب هنا بعد تجهيز الحسابات الرسمية -->
-            <!--
-            <p>
-                <a href="https://www.instagram.com/USERNAME"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    إنستغرام
-                </a>
-            </p>
-
-            <p>
-                <a href="https://www.snapchat.com/add/USERNAME"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    سناب شات
-                </a>
-            </p>
-            -->
         </div>
 
         <div>
@@ -58,8 +39,9 @@
                 <strong>واتساب:</strong>
                 <a href="https://wa.me/966538583799"
                    target="_blank"
-                   rel="noopener noreferrer">
-                    +966 53 858 3799
+                   rel="noopener noreferrer"
+                   class="phone-ltr">
+                    <bdi dir="ltr">+966 53 858 3799</bdi>
                 </a>
             </p>
 
@@ -106,6 +88,12 @@
 
 .footer a:hover {
     color: #c9a060;
+}
+
+.phone-ltr {
+    direction: ltr;
+    unicode-bidi: isolate;
+    display: inline-block;
 }
 
 .copyright {
