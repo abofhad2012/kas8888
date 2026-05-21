@@ -1,4 +1,4 @@
- <!-- ================= FOOTER ================= -->
+<!-- ================= FOOTER ================= -->
 <footer class="footer">
 
     <div class="footer-container">
@@ -13,22 +13,56 @@
 
         <div>
             <h4>روابط سريعة</h4>
-            <p><a href="/">الرئيسية</a></p>
+            <p><a href="{% url 'home' %}">الرئيسية</a></p>
             <p><a href="/products/">الخواتم</a></p>
+            <p><a href="/about/">من نحن</a></p>
             <p><a href="/contact/">تواصل معنا</a></p>
+            <p><a href="/cart/">السلة</a></p>
         </div>
 
         <div>
             <h4>تابعينا</h4>
-            <p>Instagram</p>
-            <p>Snapchat</p>
-            <p>WhatsApp</p>
+
+            <p>
+                <a href="https://www.instagram.com/USERNAME"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Instagram
+                </a>
+            </p>
+
+            <p>
+                <a href="https://www.snapchat.com/add/USERNAME"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    Snapchat
+                </a>
+            </p>
+
+            <p>
+                <a href="https://wa.me/9665XXXXXXXX"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    WhatsApp
+                </a>
+            </p>
+        </div>
+
+        <div>
+            <h4>خدمة العملاء</h4>
+            <p>
+                <a href="tel:+9665XXXXXXXX">+966 5X XXX XXXX</a>
+            </p>
+            <p>
+                <a href="mailto:info@kasstore.com">info@kasstore.com</a>
+            </p>
+            <p>من السبت إلى الخميس، 9 صباحاً - 9 مساءً</p>
         </div>
 
     </div>
 
     <div class="copyright">
-        © 2025 Rings for Women – جميع الحقوق محفوظة
+        © {% now "Y" %} Rings – جميع الحقوق محفوظة
     </div>
 
 </footer>
@@ -60,6 +94,7 @@
     color: #6b4e2e;
     font-size: 14px;
     text-decoration: none;
+    line-height: 1.8;
 }
 
 .footer a:hover {
@@ -74,13 +109,19 @@
 }
 </style>
 
-<!-- ================= POPUP JS (قبل </body>) ================= -->
+<!-- ================= POPUP JS ================= -->
 <script>
 function openSizeGuide() {
-    document.getElementById('sizeGuideModal').style.display = 'flex';
+    const modal = document.getElementById('sizeGuideModal');
+    if (modal) {
+        modal.style.display = 'flex';
+    }
 }
 
 function closeSizeGuide() {
-    document.getElementById('sizeGuideModal').style.display = 'none';
+    const modal = document.getElementById('sizeGuideModal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
 }
 </script>
