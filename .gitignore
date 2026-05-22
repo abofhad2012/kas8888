@@ -14,3 +14,5 @@ staticfiles/
 media/
 *.log
 test_cloudinary.py
+backups/
+backups/
